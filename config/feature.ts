@@ -45,34 +45,24 @@ export const FEATURES_EN = [
 
 export const FEATURES_ZH = [
   {
-    title: "开源优势",
-    content: "完全免费，提供丰富的自定义选项。",
+    title: "摘要生成",
+    content: "可以生成网址的摘要，提供简洁的描述信息，更快地了解链接指向的内容",
     icon: BsGithub,
   },
   {
-    title: "响应式设计",
-    content: "精心设计的模板，确保在任何设备上都能优化显示。",
+    title: "网址归类",
+    content: "根据网址的内容或标签自动将其归类，可以更轻松地管理和浏览各种网址",
     icon: FaMobileScreenButton,
   },
   {
-    title: "易于定制",
-    content: "轻松更改颜色、字体和布局，无需任何编码知识。",
+    title: "快速检索",
+    content: "可以快速地检索保存的网址，定位对应网站",
     icon: FaToolbox,
   },
   {
-    title: "SEO优化",
-    content: "构建模板时考虑到搜索引擎优化，增强网站的可发现性。",
+    title: "快照保存",
+    content: "保存网址的快照，防止之前的网站不可用的情况",
     icon: MagnetIcon,
-  },
-  {
-    title: "一键部署",
-    content: "与领先的网站托管服务紧密集成，实现即时网站发布。",
-    icon: MdCloudUpload,
-  },
-  {
-    title: "全球化支持",
-    content: "支持多种语言，让你的网站吸引全球受众。",
-    icon: FaEarthAsia,
   },
 ];
 

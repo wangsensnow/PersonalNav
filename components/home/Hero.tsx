@@ -1,6 +1,5 @@
 "use client";
 import { LineText } from "@/components/LineText";
-import CTAButton from "@/components/home/CTAButton";
 
 const Hero = ({ locale, CTALocale }: { locale: any; CTALocale: any }) => {
   return (
@@ -29,7 +28,7 @@ const Hero = ({ locale, CTALocale }: { locale: any; CTALocale: any }) => {
         </p>
       </section>
       {/* </motion.div> */}
-      <CTAButton locale={CTALocale}></CTAButton>
+      {/* <CTAButton locale={CTALocale}></CTAButton> */}
     </>
   );
 };

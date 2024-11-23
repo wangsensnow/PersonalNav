@@ -3,12 +3,13 @@ import Negotiator from "negotiator";
 
 export const locales = ["", "en", "en-US", "zh", "zh-CN", "zh-TW", 'zh-HK', 'ja', "ar", "es", "ru"];
 export const localeNames: any = {
-  en: "🇺🇸 English",
   zh: "🇨🇳 中文",
-  ja: "🇯🇵 日本語",
-  ar: "🇸🇦 العربية",
-  es: "🇪🇸 Español",
-  ru: "🇷🇺 Русский",
+  en: "🇺🇸 English",
+
+  // ja: "🇯🇵 日本語",
+  // ar: "🇸🇦 العربية",
+  // es: "🇪🇸 Español",
+  // ru: "🇷🇺 Русский",
 };
 export const defaultLocale = "en";
 

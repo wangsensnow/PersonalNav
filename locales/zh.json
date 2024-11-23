@@ -1,32 +1,32 @@
 {
   "Hero": {
-    "title1": "快速构建",
-    "title2": "落地页",
+    "title1": "暮云",
+    "title2": "收藏夹",
     "title3": "",
-    "description": "一个免费、开源且强大的落地页模板，适用于各种项目，让你在一个小时内搭建落地页。"
+    "description": "基于AI能力，更好地管理收藏的网址数据。"
   },
   "SocialProof": {
-    "maker": "制作者快速开发"
+    "maker": "xxx"
   },
   "Showcase": {
     "title": "Showcase",
-    "description": "与1000+创作者一起，使用我们的落地页模板提升转化率"
+    "description": "xxx"
   },
   "Feature": {
     "title": "Feature"
   },
   "Pricing": {
     "title": "定价",
-    "title2": "拥有无限访问权限",
-    "description": "你当前查看的页面是一个开源的、免费的模板。",
-    "doYouLike": "你喜欢这个落地页模板吗？",
+    "title2": "",
+    "description": "更方便快捷地管理自己的网址",
+    "doYouLike": "您喜欢我们产品吗？",
     "follow": "关注我的推特。"
   },
   "Testimonials": {
     "title": "Testimonials",
-    "description1": "如果你使用这个落地页模板并在推特上推荐了，",
-    "description2": "请告诉我",
-    "description3": "，我会在这里展示你的推文和推荐。"
+    "description1": "xxxx",
+    "description2": "xxxx",
+    "description3": "xxxx"
   },
   "FAQ": {
     "title": "FAQs",
