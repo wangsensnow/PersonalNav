@@ -1,10 +1,11 @@
 {
   "Hero": {
-    "title1": "Ship",
-    "title2": "Landing Page",
-    "title3": "Fast",
-    "description": "A free, open-source, and powerful landing page boilerplate, ideal for various projects, enabling you to create a landing page in under an hour."
+    "title1": "M",
+    "title2": "Links",
+    "title3": "",
+    "description": "A highly useful website link management tool that helps you efficiently manage and organize your website links."
   },
+
   "SocialProof": {
     "maker": "makers ship fast"
   },
@@ -17,8 +18,8 @@
   },
   "Pricing": {
     "title": "Pricing",
-    "title2": "Get unlimited access.",
-    "description": "The page you are currently viewing is an open-source, free boilerplate.",
+    "title2": "",
+    "description": "More convenient and efficient management of one's own website url.",
     "doYouLike": "Do you like this landing page boilerplate?",
     "follow": "Follow my Twitter."
   },

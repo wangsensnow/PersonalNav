@@ -1,68 +1,77 @@
 import { LucideIcon, MagnetIcon } from "lucide-react";
 import { IconType } from "react-icons";
 import { BsGithub } from "react-icons/bs";
+import { CiImport, CiViewTimeline } from "react-icons/ci";
 import { FaToolbox } from "react-icons/fa";
 import { FaEarthAsia, FaMobileScreenButton } from "react-icons/fa6";
-import { MdCloudUpload } from "react-icons/md";
-
+import { MdCloudUpload, MdManageSearch } from "react-icons/md";
+import { PiExportLight } from "react-icons/pi";
+import { TbCategory } from "react-icons/tb";
+import { TiTabsOutline } from "react-icons/ti";
 export const FEATURES_EN = [
   {
-    title: "Open Source Advantage",
-    content: "Completely free with a wealth of customization options.",
-    icon: BsGithub,
+    "title": "Data Import",
+    "content": "Quickly import browser URLs to the platform and support exporting.",
+    "icon": CiImport
   },
   {
-    title: "Responsive Design",
-    content:
-      "Templates meticulously designed to ensure optimal display on any device.",
-    icon: FaMobileScreenButton,
+    "title": "Data Export",
+    "content": "Export personal data and import it into the browser.",
+    "icon": PiExportLight
   },
   {
-    title: "Easy Customization",
-    content:
-      "Effortlessly change colors, fonts, and layouts without any coding knowledge.",
-    icon: FaToolbox,
+    "title": "Summary Generation",
+    "content": "Generate summaries of URLs to provide concise information for a faster understanding of the linked content.",
+    "icon": CiViewTimeline
   },
   {
-    title: "SEO Optimized",
-    content:
-      "Templates built with search engine optimization in mind to enhance your website's discoverability.",
-    icon: MagnetIcon,
+    "title": "URL Categorization",
+    "content": "Automatically categorize URLs based on their content or tags, making it easier to manage and browse various URLs.",
+    "icon": TbCategory
   },
   {
-    title: "One-Click Deployment",
-    content:
-      "Tightly integrated with leading web hosting services for instant website publishing.",
-    icon: MdCloudUpload,
+    "title": "Quick Search",
+    "content": "Quickly search saved URLs to locate corresponding websites.",
+    "icon": MdManageSearch
   },
   {
-    title: "Globalization Support",
-    content:
-      "Supports multiple languages, making your website attractive to a global audience.",
-    icon: FaEarthAsia,
-  },
-];
+    "title": "Snapshot Saving",
+    "content": "Save snapshots of URLs to prevent the unavailability of previously visited websites.",
+    "icon": TiTabsOutline
+  }
+]
+
 
 export const FEATURES_ZH = [
   {
+    title: "数据导入",
+    content: "可以快速将浏览器网址导入到平台，并支持导出",
+    icon: CiImport,
+  },
+  {
+    title: "数据导出",
+    content: "可以将个人数据导出，并引入到浏览器",
+    icon: PiExportLight,
+  },
+  {
     title: "摘要生成",
     content: "可以生成网址的摘要，提供简洁的描述信息，更快地了解链接指向的内容",
-    icon: BsGithub,
+    icon: CiViewTimeline,
   },
   {
     title: "网址归类",
     content: "根据网址的内容或标签自动将其归类，可以更轻松地管理和浏览各种网址",
-    icon: FaMobileScreenButton,
+    icon: TbCategory,
   },
   {
     title: "快速检索",
     content: "可以快速地检索保存的网址，定位对应网站",
-    icon: FaToolbox,
+    icon: MdManageSearch,
   },
   {
     title: "快照保存",
     content: "保存网址的快照，防止之前的网站不可用的情况",
-    icon: MagnetIcon,
+    icon: TiTabsOutline,
   },
 ];
 

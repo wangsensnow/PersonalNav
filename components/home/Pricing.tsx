@@ -46,7 +46,7 @@ const Pricing = ({
       <Spacer y={8} />
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 justify-items-center">
         {TIERS?.map((tier) => (
-          <Card key={tier.key} className="p-3 flex-1 w-[90%]" shadow="md">
+          <Card key={tier.key} className="p-5 m-5 flex-4 w-[95%]" shadow="md">
             <CardHeader className="flex flex-col items-start gap-2 pb-6">
               <h2 className="text-large font-medium">{tier.title}</h2>
               <p className="text-medium text-default-500">{tier.description}</p>
