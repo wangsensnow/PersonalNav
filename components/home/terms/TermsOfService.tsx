@@ -4,7 +4,7 @@ const TermsOfService = () => {
 
     <div className="flex flex-col text-left max-w-4xl">
       <h2 className="text-4xl  text-center font-bold mb-4">Terms of Service</h2>
-      <p className="text-sm text-center mb-4">Last updated: Nov. 24, 2024</p>
+      <p className="text-sm text-center mb-4">Last updated: Nov. 25, 2024</p>
       <ul className="list-decimal">
         <li>
           <p className="text-left mb-1">Terms of Service</p>
