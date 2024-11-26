@@ -9,13 +9,13 @@ const TermsOfService = () => {
         <li>
           <p className="text-left mb-1">Terms of Service</p>
           <p className="text-left">
-            By using Mkdirs you confirm your acceptance of, and agree to be bound by, these terms and conditions.
+            By using Mlink you confirm your acceptance of, and agree to be bound by, these terms and conditions.
           </p>
         </li>
         <li>
           <p className="text-left mt-2 mb-1">Agreement to Terms and Conditions</p>
           <p className="text-left">
-            This Agreement takes effect on the date on which you first use the Mkdirs application.
+            This Agreement takes effect on the date on which you first use the Mlink application.
           </p>
         </li>
         <li>
