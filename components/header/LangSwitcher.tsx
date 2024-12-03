@@ -15,15 +15,15 @@ export const LangSwitcher = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  let langName = (params.lang as string) || defaultLocale;
+  let langName = params?.lang as string || defaultLocale;
 
   const handleSwitchLanguage = (value: string) => {
-    const pathSegments = pathname
+    const pathSegments = (pathname || '')
       .split("/")
       .filter((segment) => segment !== "");
     let newPath;
 
-    if (pathSegments[0] === params.lang) {
+    if (pathSegments[0] === params?.lang) {
       // Current path has a language code
       newPath = pathSegments.slice(1).join("/");
     } else {

@@ -19,7 +19,7 @@ const links = [
 
 const Header = () => {
   const params = useParams();
-  const lang = params.lang;
+  const lang = params?.lang || 'en';
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
