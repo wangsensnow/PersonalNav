@@ -69,7 +69,9 @@ export default async function handler(
   try {
     // 等待 axios 请求完成
     const axiosResponse = await axios.post(api.url, api.params, api.config);
-    console.log("返回的数据", axiosResponse.data.Image.slice(0, 100));
+
+    const inputBuffer = Buffer.from(axiosResponse.data.Image, 'base64');
+    console.log("返回的数据大小是", inputBuffer.length);
     const resImage = "data:image/jpeg;base64," + axiosResponse.data.Image;
 
     // 返回响应
@@ -83,7 +85,7 @@ export default async function handler(
 
 // 同步压缩图片函数
 function compressImageSync(base64String: string, quality: number) {
-  // 将 Base64 字符串解码为 Buffer 对象
+  // 将 Base64 字���串解码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
   const sharp = require('sharp');
   // 使用 sharp 压缩图片并返回压缩后的 Buffer 对象
@@ -102,7 +104,17 @@ async function compressImage(base64String: string, quality: number) {
   const sharp = require('sharp');
   // 使用 sharp 压缩图片
   const outputBuffer = await sharp(inputBuffer)
-    .jpeg({ quality: quality })
+    .jpeg({
+      quality: quality,
+      mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
+      chromaSubsampling: '4:2:0', // 降低色度采样
+      trellisQuantisation: true, // 使用网格量化
+      overshootDeringing: true, // 过冲去振铃
+      optimizeScans: true, // 优化扫描
+      optimizeCoding: true, // 优化编码
+      quantisationTable: 3 // 使用更激进的量化表
+    })
+    .withMetadata(false) // 移除元数据
     .toBuffer();
   console.log("压缩后", outputBuffer.length);
 
