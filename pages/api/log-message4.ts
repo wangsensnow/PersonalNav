@@ -3,6 +3,14 @@ type ResponseData = {
   message: string
 }
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '20mb'
+    }
+  }
+}
+
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<ResponseData>
@@ -39,7 +47,7 @@ export default async function handler(
   // const compressedImage = compressImageSync(imageBase64, 50);
   // const base64Image = compressedImage.toString('base64');
 
-  const compressedImage2 = await compressImage(imageBase64, 50);
+  const compressedImage2 = await compressImage(imageBase64, 40);
   console.log("压缩后", compressedImage2.slice(0, 100));
 
   const body = new Request.Body({
@@ -89,11 +97,13 @@ function compressImageSync(base64String: string, quality: number) {
 async function compressImage(base64String: string, quality: number) {
   // 将 Base64 字符串解码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
+  console.log("压缩前", inputBuffer.length);
   const sharp = require('sharp');
   // 使用 sharp 压缩图片
   const outputBuffer = await sharp(inputBuffer)
     .jpeg({ quality: quality })
     .toBuffer();
+  console.log("压缩后", outputBuffer.length);
 
   // 将压缩后的 Buffer 对象转换为 Base64 字符串
   const compressedBase64 = outputBuffer.toString('base64');

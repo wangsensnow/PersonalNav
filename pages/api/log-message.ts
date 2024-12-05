@@ -3,6 +3,13 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 type ResponseData = {
   message: string
 }
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '20mb'
+    }
+  }
+}
 
 export default function handler(
   req: NextApiRequest,
