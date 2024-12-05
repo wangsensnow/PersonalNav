@@ -113,7 +113,7 @@ async function compressImage(base64String: string, quality: number) {
       overshootDeringing: true, // 过冲去振铃
       optimizeScans: true, // 优化扫描
       optimizeCoding: true, // 优化编码
-      quantisationTable: 3 // 使用更激进的量化表
+      quantisationTable: 8 // 使用更激进的量化表
 
     })
     .withMetadata(false)
