@@ -114,10 +114,12 @@ async function compressImage(base64String: string, quality: number) {
       optimizeScans: true, // 优化扫描
       optimizeCoding: true, // 优化编码
       quantisationTable: 8 // 使用更激进的量化表
-
     })
     .withMetadata(false)
-    .grayscale()
+    .resize(800, 800, {  // 限制最大尺寸
+      fit: 'inside',
+      withoutEnlargement: true
+    })
     // 增加以下处理步骤
     .toBuffer();
 
