@@ -14,9 +14,13 @@ export default function handler(
 
   const { ApiInfo, ServiceInfo, Credentials, API, Request } = VolcEngineSDK;
 
-  // 设置安全凭证 AK、SK
-  const AK = 'AKLTNTA0M2ViZTdjMmRmNDI2YTg3ODA2ZmEyYzRkMTBhZTE';
-  const SK = 'TWpGalpUTTJOakZoTXpZeU5EZGhaV0psWWpsbVpqRXlZemcxTVdRell6WQ==';
+  // 从环境变量获取安全凭证
+  const AK = process.env.VOLC_ENGINE_AK;
+  const SK = process.env.VOLC_ENGINE_SK;
+
+  if (!AK || !SK) {
+    throw new Error('Missing VOLC_ENGINE_AK or VOLC_ENGINE_SK environment variables');
+  }
 
   // 翻译目标语言、翻译文本列表
   const toLang = 'zh';
