@@ -47,7 +47,7 @@ export default async function handler(
   // const compressedImage = compressImageSync(imageBase64, 50);
   // const base64Image = compressedImage.toString('base64');
 
-  const compressedImage2 = await compressImage(imageBase64, 40);
+  const compressedImage2 = await compressImage(imageBase64, 20);
   console.log("压缩后", compressedImage2.slice(0, 100));
 
   const body = new Request.Body({
@@ -69,6 +69,7 @@ export default async function handler(
   try {
     // 等待 axios 请求完成
     const axiosResponse = await axios.post(api.url, api.params, api.config);
+    console.log("返回的数据", axiosResponse.data.Image.slice(0, 100));
     const resImage = "data:image/jpeg;base64," + axiosResponse.data.Image;
 
     // 返回响应
