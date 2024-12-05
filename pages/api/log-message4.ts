@@ -117,6 +117,7 @@ async function compressImage(base64String: string, quality: number) {
 
     })
     .withMetadata(false)
+    .grayscale()
     // 增加以下处理步骤
     .toBuffer();
 
