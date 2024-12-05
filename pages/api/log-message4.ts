@@ -85,7 +85,7 @@ export default async function handler(
 
 // 同步压缩图片函数
 function compressImageSync(base64String: string, quality: number) {
-  // 将 Base64 字���串解码为 Buffer 对象
+  // 将 Base64 字符串解码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
   const sharp = require('sharp');
   // 使用 sharp 压缩图片并返回压缩后的 Buffer 对象
@@ -102,20 +102,28 @@ async function compressImage(base64String: string, quality: number) {
   const inputBuffer = Buffer.from(base64String, 'base64');
   console.log("压缩前", inputBuffer.length);
   const sharp = require('sharp');
-  // 使用 sharp 压缩图片
+
+  // 使用 sharp 压缩图片，增加更多压缩选项
   const outputBuffer = await sharp(inputBuffer)
     .jpeg({
       quality: quality,
-      mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
-      chromaSubsampling: '4:2:0', // 降低色度采样
-      trellisQuantisation: true, // 使用网格量化
-      overshootDeringing: true, // 过冲去振铃
-      optimizeScans: true, // 优化扫描
-      optimizeCoding: true, // 优化编码
-      quantisationTable: 3 // 使用更激进的量化表
+      mozjpeg: true,
+      chromaSubsampling: '4:2:0',
+      trellisQuantisation: true,
+      overshootDeringing: true,
+      optimizeScans: true,
+      optimizeCoding: true,
+      quantisationTable: 8  // 使用更激进的量化表（从3改为8）
     })
-    .withMetadata(false) // 移除元数据
+    .withMetadata(false)
+    // 增加以下处理步骤
+    .grayscale()  // 转换为灰度图像以减少色彩信息
+    .resize(800, 800, {  // 限制最大尺寸
+      fit: 'inside',
+      withoutEnlargement: true
+    })
     .toBuffer();
+
   console.log("压缩后", outputBuffer.length);
 
   // 将压缩后的 Buffer 对象转换为 Base64 字符串
