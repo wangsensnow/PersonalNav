@@ -106,10 +106,6 @@ async function compressImage(base64String: string, quality: number) {
       quantisationTable: 3 // 使用更激进的量化表
     })
     .withMetadata(false)
-    .resize(800, 800, {  // 限制最大尺寸
-      fit: 'inside',
-      withoutEnlargement: true
-    })
     .modulate({
       saturation: 0.6,  // 降低色彩饱和度到 60%
       brightness: 1.0,  // 保持原始亮度
