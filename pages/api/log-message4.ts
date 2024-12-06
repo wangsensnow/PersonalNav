@@ -47,11 +47,11 @@ export default async function handler(
   // const compressedImage = compressImageSync(imageBase64, 50);
   // const base64Image = compressedImage.toString('base64');
 
-
+  const compressedReqBase64 = await compressImage(imageBase64, 50);
 
   const body = new Request.Body({
     'TargetLanguage': 'zh',
-    'Image': imageBase64
+    'Image': compressedReqBase64
   });
 
   // 设置 service、api信息
@@ -106,6 +106,11 @@ async function compressImage(base64String: string, quality: number) {
       quantisationTable: 3 // 使用更激进的量化表
     })
     .withMetadata(false)
+    .resize(800, 800, {  // 限制最大尺寸
+      fit: 'inside',
+      withoutEnlargement: true
+    })
+    .grayscale()
     .modulate({
       saturation: 0.6,  // 降低色彩饱和度到 60%
       brightness: 1.0,  // 保持原始亮度
