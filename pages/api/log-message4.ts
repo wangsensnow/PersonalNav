@@ -98,32 +98,14 @@ async function compressImage(base64String: string, quality: number) {
     .jpeg({
       quality: quality,
       mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
-      chromaSubsampling: '4:2:0', // 降低色度采样
-      trellisQuantisation: true, // 使用网格量化
-      overshootDeringing: true, // 过冲去振铃
-      optimizeScans: true, // 优化扫描
-      optimizeCoding: true, // 优化编码
       quantisationTable: 3 // 使用更激进的量化表
     })
     .withMetadata(false)
-    .resize(1200, 1200, {  // 限制最大尺寸
+    .resize(900, 900, {  // 限制最大尺寸
       fit: 'inside',
       withoutEnlargement: true
     })
     .grayscale()
-    .modulate({
-      saturation: 0.6,  // 降低色彩饱和度到 60%
-      brightness: 1.0,  // 保持原始亮度
-      hue: 0           // 保持原始色调
-    })
-    .sharpen({
-      sigma: 1.5,      // 锐化半径
-      m1: 1.5,         // 锐化强度
-      m2: 0.7,         // 平滑强度
-      x1: 2,           // 细节阈值
-      y2: 10,          // 边缘阈值
-      y3: 20           // 平滑阈值
-    })
     .toBuffer();
 
   console.log("压缩后", outputBuffer.length);
