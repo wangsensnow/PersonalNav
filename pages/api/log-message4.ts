@@ -88,7 +88,7 @@ export default async function handler(
 
 
 async function compressImage(base64String: string, quality: number) {
-  // 将 Base64 字符串解码为 Buffer 对象
+  // 将 Base64 字符串���码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
   console.log("压缩前", inputBuffer.length);
   const sharp = require('sharp');
@@ -110,7 +110,19 @@ async function compressImage(base64String: string, quality: number) {
       fit: 'inside',
       withoutEnlargement: true
     })
-    // 增加以下处理步骤
+    .modulate({
+      saturation: 0.6,  // 降低色彩饱和度到 60%
+      brightness: 1.0,  // 保持原始亮度
+      hue: 0           // 保持原始色调
+    })
+    .sharpen({
+      sigma: 1.5,      // 锐化半径
+      m1: 1.5,         // 锐化强度
+      m2: 0.7,         // 平滑强度
+      x1: 2,           // 细节阈值
+      y2: 10,          // 边缘阈值
+      y3: 20           // 平滑阈值
+    })
     .toBuffer();
 
   console.log("压缩后", outputBuffer.length);
