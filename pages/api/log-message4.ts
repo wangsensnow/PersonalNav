@@ -71,7 +71,7 @@ export default async function handler(
 
     const inputBuffer = Buffer.from(axiosResponse.data.Image, 'base64');
 
-    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 20);
+    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 50);
     console.log("压缩后", compressedResBase64.slice(0, 100));
 
     console.log("返回的数据大小是", inputBuffer.length);
