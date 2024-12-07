@@ -1,7 +1,16 @@
+import rateLimit from 'express-rate-limit';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import sharp from 'sharp';
+
 type ResponseData = {
-  message: string
+  message: string;
+  error?: string;
 }
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15分钟
+  max: 100 // 限制每个IP 15分钟内最多100个请求
+});
 
 export const config = {
   api: {
@@ -15,6 +24,9 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<ResponseData>
 ) {
+  // 应用限流
+  await new Promise((resolve) => limiter(request, response, resolve));
+
   // import VolcEngineSDK from "volcengine-sdk";
   const VolcEngineSDK = require("volcengine-sdk");
   const axios = require("axios");
@@ -69,54 +81,61 @@ export default async function handler(
     // 等待 axios 请求完成
     const axiosResponse = await axios.post(api.url, api.params, api.config);
 
-    const inputBuffer = Buffer.from(axiosResponse.data.Image, 'base64');
+    // 添加响应数据检查
+    if (!axiosResponse.data || !axiosResponse.data.Image) {
+      throw new Error('Invalid response data');
+    }
 
-    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 20);
-    console.log("压缩后", compressedResBase64.slice(0, 100));
+    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 50);
 
-    console.log("返回的数据大小是", inputBuffer.length);
+    // 添加超时处理
+    const timeout = setTimeout(() => {
+      response.status(504).json({ message: '处理超时' });
+    }, 30000); // 30秒超时
+
     const resImage = "data:image/jpeg;base64," + compressedResBase64;
+    clearTimeout(timeout);
 
-    // 返回响应
     response.status(200).json({ message: resImage });
   } catch (error) {
     console.error('处理请求时出错:', error);
-    response.status(500).json({ message: '服务器内部错误' });
+    // 更详细的错误信息
+    response.status(500).json({
+      message: '服务器内部错误',
+      error: error instanceof Error ? error.message : '未知错误'
+    });
   }
 }
 
 
 
 async function compressImage(base64String: string, quality: number) {
-  // 将 Base64 字符串解码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
-  console.log("压缩前", inputBuffer.length);
-  const sharp = require('sharp');
 
-  // 使用 sharp 压缩图片，增加更多压缩选项
-  const outputBuffer = await sharp(inputBuffer)
-    .jpeg({
-      quality: quality,
-      mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
-      chromaSubsampling: '4:2:0', // 降低色度采样
-      trellisQuantisation: true, // 使用网格量化
-      overshootDeringing: true, // 过冲去振铃
-      optimizeScans: true, // 优化扫描
-      optimizeCoding: true, // 优化编码
-      quantisationTable: 3 // 使用更激进的量化表
-    })
-    .withMetadata(false)
-    .resize(800, 800, {  // 限制最大尺寸
-      fit: 'inside',
-      withoutEnlargement: true
-    })
-    // 增加以下处理步骤
-    .toBuffer();
+  try {
+    const outputBuffer = await sharp(inputBuffer)
+      .jpeg({
+        quality: quality,
+        mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
+        chromaSubsampling: '4:2:0', // 降低色度采样
+        trellisQuantisation: true, // 使用网格量化
+        overshootDeringing: true, // 过冲去振铃
+        optimizeScans: true, // 优化扫描
+        optimizeCoding: true, // 优化编码
+        quantisationTable: 3 // 使用更激进的量化表
+      })
+      .resize(800, 800, {
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .toBuffer();
 
-  console.log("压缩后", outputBuffer.length);
+    // 手动清理
+    inputBuffer.fill(0);
 
-  // 将压缩后的 Buffer 对象转换为 Base64 字符串
-  const compressedBase64 = outputBuffer.toString('base64');
-
-  return compressedBase64;
+    return outputBuffer.toString('base64');
+  } finally {
+    // 确保资源被释放
+    if (inputBuffer) inputBuffer.fill(0);
+  }
 }
