@@ -1,6 +1,5 @@
 import rateLimit from 'express-rate-limit';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import sharp from 'sharp';
 
 type ResponseData = {
   message: string;
@@ -59,11 +58,11 @@ export default async function handler(
   // const compressedImage = compressImageSync(imageBase64, 50);
   // const base64Image = compressedImage.toString('base64');
 
-
+  const compressedReqBase64 = await compressImage(imageBase64, 50);
 
   const body = new Request.Body({
     'TargetLanguage': 'zh',
-    'Image': imageBase64
+    'Image': compressedReqBase64
   });
 
   // 设置 service、api信息
@@ -87,14 +86,10 @@ export default async function handler(
     }
 
     const compressedResBase64 = await compressImage(axiosResponse.data.Image, 50);
+    console.log("压缩后", compressedResBase64.slice(0, 100));
 
-    // 添加超时处理
-    const timeout = setTimeout(() => {
-      response.status(504).json({ message: '处理超时' });
-    }, 30000); // 30秒超时
 
     const resImage = "data:image/jpeg;base64," + compressedResBase64;
-    clearTimeout(timeout);
 
     response.status(200).json({ message: resImage });
   } catch (error) {
@@ -110,32 +105,31 @@ export default async function handler(
 
 
 async function compressImage(base64String: string, quality: number) {
+
+  // 将 Base64 字符串���码为 Buffer 对象
   const inputBuffer = Buffer.from(base64String, 'base64');
+  console.log("压缩前", inputBuffer.length);
+  const sharp = require('sharp');
 
-  try {
-    const outputBuffer = await sharp(inputBuffer)
-      .jpeg({
-        quality: quality,
-        mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
-        chromaSubsampling: '4:2:0', // 降低色度采样
-        trellisQuantisation: true, // 使用网格量化
-        overshootDeringing: true, // 过冲去振铃
-        optimizeScans: true, // 优化扫描
-        optimizeCoding: true, // 优化编码
-        quantisationTable: 3 // 使用更激进的量化表
-      })
-      .resize(800, 800, {
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .toBuffer();
+  // 使用 sharp 压缩图片，增加更多压缩选项
+  const outputBuffer = await sharp(inputBuffer)
+    .jpeg({
+      quality: quality,
+      mozjpeg: true, // 使用 mozjpeg 编码器获得更好的压缩效果
+      quantisationTable: 3 // 使用更激进的量化表
+    })
+    .withMetadata(false)
+    .resize(900, 900, {  // 限制最大尺寸
+      fit: 'inside',
+      withoutEnlargement: true
+    })
+    .grayscale()
+    .toBuffer();
 
-    // 手动清理
-    inputBuffer.fill(0);
+  console.log("压缩后", outputBuffer.length);
 
-    return outputBuffer.toString('base64');
-  } finally {
-    // 确保资源被释放
-    if (inputBuffer) inputBuffer.fill(0);
-  }
+  // 将压缩后的 Buffer 对象转换为 Base64 字符串
+  const compressedBase64 = outputBuffer.toString('base64');
+
+  return compressedBase64;
 }
