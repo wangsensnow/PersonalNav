@@ -14,7 +14,12 @@ const sharpInstance = sharp();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15分钟
   max: 50, // 限制每个IP 15分钟内最多50个请求
-  message: '请求过于频繁，请稍后再试'
+  message: '请求过于频繁，请稍后再试',
+  keyGenerator: (req: any) => {
+    const xff = req.headers['x-forwarded-for'];
+    const ip = xff ? xff.split(',')[0] : req.socket.remoteAddress;
+    return ip || 'unknown';
+  }
 });
 
 // 设置最大图片大小限制
