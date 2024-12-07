@@ -50,10 +50,6 @@ async function compressImage(base64String: string, quality: number): Promise<str
         mozjpeg: true,
         quantisationTable: 3
       })
-      .resize(900, 900, {
-        fit: 'inside',
-        withoutEnlargement: true
-      })
       .grayscale()
       .toBuffer();
 
@@ -105,7 +101,7 @@ export default async function handler(
     }
 
     // 压缩上传的图片
-    const compressedReqBase64 = await compressImage(message, 50);
+    const compressedReqBase64 = await compressImage(message, 80);
 
     // 设置API请求参数
     const credentials = new Credentials(AK, SK, 'translate', 'cn-north-1');
@@ -140,7 +136,7 @@ export default async function handler(
     }
 
     // 压缩返回的图片
-    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 50);
+    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 100);
     const resImage = "data:image/jpeg;base64," + compressedResBase64;
 
     // 记录内存使用情况
