@@ -1,10 +1,39 @@
 import rateLimit from 'express-rate-limit';
+import fs from 'fs/promises';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
 import sharp from 'sharp';
 
 type ResponseData = {
   message: string;
   error?: string;
+  filePath?: string;
+}
+
+// 确保输出目录存在
+const PICS_DIR = '/tmp/pics';
+async function ensureDir() {
+  try {
+    await fs.access(PICS_DIR);
+  } catch {
+    await fs.mkdir(PICS_DIR, { recursive: true });
+  }
+}
+
+// 生成唯一文件名
+function generateFileName() {
+  const timestamp = new Date().getTime();
+  const random = Math.floor(Math.random() * 10000);
+  return `${timestamp}_${random}.jpg`;
+}
+
+// 异步保存图片
+async function saveImage(buffer: Buffer): Promise<string> {
+  await ensureDir();
+  const fileName = generateFileName();
+  const filePath = path.join(PICS_DIR, fileName);
+  await fs.writeFile(filePath, buffer);
+  return filePath;
 }
 
 // 创建单个 Sharp 实例复用
@@ -103,7 +132,7 @@ export default async function handler(
     // 压缩上传的图片
     const compressedReqBase64 = await compressImage(message, 80);
 
-    // 设置API请求参数
+    // 设���API请求参数
     const credentials = new Credentials(AK, SK, 'translate', 'cn-north-1');
     const header = new Request.Header({
       'Content-Type': 'application/json'
@@ -136,8 +165,13 @@ export default async function handler(
     }
 
     // 压缩返回的图片
-    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 100);
+    const compressedResBase64 = await compressImage(axiosResponse.data.Image, 50);
     const resImage = "data:image/jpeg;base64," + compressedResBase64;
+
+    // 保存图片到文件系统
+    const imageBuffer = Buffer.from(compressedResBase64, 'base64');
+    const filePath = await saveImage(imageBuffer);
+    console.log('图片已保存到:', filePath);
 
     // 记录内存使用情况
     const memoryUsage = process.memoryUsage();
@@ -147,7 +181,11 @@ export default async function handler(
       rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`
     });
 
-    response.status(200).json({ message: resImage });
+    response.status(200).json({
+      message: resImage,
+      filePath: filePath
+    });
+
   } catch (error) {
     console.error('请求处理失败:', error);
     response.status(500).json({
@@ -155,7 +193,6 @@ export default async function handler(
       error: error instanceof Error ? error.message : '未知错误'
     });
   } finally {
-    // 建议在处理完大量数据后手动触发垃圾回收
     if (global.gc) {
       global.gc();
     }
