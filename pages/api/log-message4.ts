@@ -129,6 +129,7 @@ export default async function handler(
       throw new Error('缺少必要的请求参数');
     }
     console.log("参数的长度是:", message.length);
+    console.log("参数的长度是内容是:", message);
     // 压缩上传的图片
     const compressedReqBase64 = await compressImage(message, 80);
 
