@@ -128,9 +128,10 @@ export default async function handler(
     if (!message) {
       throw new Error('缺少必要的请求参数');
     }
-
+    console.log("参数的长度是:", message.length);
     // 压缩上传的图片
     const compressedReqBase64 = await compressImage(message, 80);
+
 
     // 设���API请求参数
     const credentials = new Credentials(AK, SK, 'translate', 'cn-north-1');
